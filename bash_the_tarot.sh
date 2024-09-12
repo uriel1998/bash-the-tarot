@@ -16,6 +16,7 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=1 
 declare -a ReadingCardList=() 
 FOCUS=""
+USER_SEED=""
 ######################################################################## 
 # Arrays inside this script (the other data is in ./lib 
 ######################################################################## 
@@ -74,27 +75,42 @@ function loud() {
     fi 
 } 
  
-    if [ $# -ne 1 ]; then  
-        echo "Usage: $0 <seed>"  
-        exit 1  
-    fi  
+ 
  
  
   
+function get_random_baby(){
+    # if there is user input on what to inquire about
+    if [ "${USER_SEED}" != "" ];then
+        # run string of seed through here to turn into numbers 
+        SEED=$(echo "${USER_SEED}" |  od -An -vtu1 | sed 's/  / /g' | tr ' ' '+') 
+        SEED="${SEED:1}" #remove first +
+        SEED=$(echo $(( SEED )))
+        SEED=$(( SEED + $(date +%s) ))
+    else
+        SEED=$(date +%s)
+    fi
+    RANDOM=$SEED
+    echo $(( RANDOM % 78  )) 
+    sleep 1
 
+}
   
 function draw_cards(){ 
  
     readonly NUM_RANGE=78  
     readonly NUM_COUNT=10
   
+ 
+
+
+  
     for (( i = 0; i < NUM_COUNT; i++ )); do  
+        loud "Drawing card number $( echo $(( i + 1)))"
         while (( 1 )); do  
   
-            rand=$RANDOM  
-            let "rand %= $NUM_RANGE"  
+            rand=$(get_random_baby)
             rand=$((rand+1))  
-  
             if [[ ! " ${drawn[@]} " =~ " ${rand} " ]]; then  
                 ReadingCardList+=($rand)  
                 break  
@@ -112,14 +128,23 @@ function draw_cards(){
     done  
 } 
  
- 
-SEED=$1  
-RANDOM=$SEED+$(date +%s) 
-# run string of seed through here to turn into numbers 
- |  od -An -vtu1 | sed 's/  / /g' | tr ' ' '+'
+if [[ "${@}" != "" ]];then
+    USER_SEED="${@}"
+else
+    USER_SEED=$(date +%s)
+fi
 
- 
 draw_cards 
+
+
 echo "${ReadingCardList[@]}" 
+
+# now that we've drawn the cards, we can pull the readings one at a time and present them to the user.
+# iterate through the ten cards
+# use the number_cards file to get the name and whether it's reversed or not
+# for each position, random 0-3, pick that number of array and then the index number from the iteration for the narrative bit
+# join phrase
+# card phrase(s) pulled by jq from the json file
+
 echo "${ReadingCardList[3]}" 
   
