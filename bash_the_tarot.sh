@@ -2,7 +2,7 @@
  
  ########################################################################
  #   bash-the-tarot
- #   a very bespoke news searcher
+ #   a very bespoke tarot reader
  #   by Steven Saus (c)2024
  #   Licensed under CC0 license
  # 
@@ -24,9 +24,11 @@ if [ ! -d "${SCRIPT_DIR}/tmp" ];then
     mkdir -p "${SCRIPT_DIR}/tmp"
 fi
 TempDir="${SCRIPT_DIR}/tmp"
+
 ########################################################################
 # Arrays inside this script (the other data is in ./lib
 ########################################################################
+
 declare -a join_phrases=("is about" "pertains to" "refers to" "is related to" "is regarding" "relates to")
 declare -a light_phrases=("considering" "exploring" "looking into" "contemplating" "deliberating on" "reflecting on") 
 declare -a shadow_phrases=("being wary of" "avoiding" "steering clear of" "forgoing" "resisting" "being suspicious of") 
@@ -198,24 +200,10 @@ else
 fi
 
 draw_cards
-# now that we've drawn the cards, we can pull the readings one at a time and present them to the user.
-# iterate through the ten cards
-# use the number_cards file to get the name and whether it's reversed or not
-# for each position, random 0-3, pick that number of array and then the index number from the iteration for the narrative bit
-# join phrase
-# card phrase(s) pulled by jq from the json file
+
 for (( i = 0; i < NUM_COUNT; i++ )); do
     create_card_interpretation $i
 done
-
-# OKAY, so for the fancy readings, we will allow the user to scroll back and forth through the positions.
-# for each position:
-# position_name
-# position_explanation
-# image ?
-# jp2a --height=24 --colors ./maj15.jpg   AND CAN FLIP ON Y AXIS FOR REVERSED
-# interpretation
-# use [, ], and q 
 
 loud "Beginning reading"
 echo " "
@@ -303,7 +291,4 @@ while [ $exit -eq 0 ]; do
     
 done
 
-
-# TODO Add option to save reading as one file
-# TODO offer just slide by slide moving through
 rm -rf "${TempDir}"/*
