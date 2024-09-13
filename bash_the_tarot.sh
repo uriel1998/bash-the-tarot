@@ -227,32 +227,31 @@ echo " "
 
 for (( i = 0; i < NUM_COUNT; i++ )); do
 
-    echo "${position_names[i]}" > "${TempDir}"/"${i}".txt
-    
+    echo "  ${position_names[i]}" > "${TempDir}"/"${i}".txt
     # for image
     crnum=$(echo "${ReadingCardList[i]}")
     s2=$(grep -e "^$crnum\=" "${SCRIPT_DIR}/lib/number_cards.dat")
     crname=$(echo "${s2}" | awk -F '=' '{print $2}')
     if [ $crnum -gt 78 ];then
-        echo "${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
+        echo "  ${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
         crnum=$(( crnum - 78 ))
         jp2a -y --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt     
         echo " " >> "${TempDir}"/"${i}".txt   
-        echo "${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
+        echo "  ${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
     else
-        echo "${crname}" >> "${TempDir}"/"${i}".txt            
+        echo "  ${crname}" >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
         jp2a --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
-        echo "${crname}" >> "${TempDir}"/"${i}".txt            
+        echo "  ${crname}" >> "${TempDir}"/"${i}".txt            
     fi
     echo " " >> "${TempDir}"/"${i}".txt
-    echo "${position_meanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
+    echo " ${position_meanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
     echo " " >> "${TempDir}"/"${i}".txt
-    echo "${ReadingMeanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
+    echo " ${ReadingMeanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
     echo " " >> "${TempDir}"/"${i}".txt
-    echo "*****************************************************************" >> "${TempDir}"/"${i}".txt
+    echo " *****************************************************************" >> "${TempDir}"/"${i}".txt
     #echo -e "\E[0;32m(\E[0;37mn\E[0;32m)ext, (\E[0;37mp\E[0;32m)revious, or (\E[0;37mq\E[0;32m)uit? "; tput sgr0
     #read -r CHOICE
     #asciiart -c -w 30 ./cups04.jpg
@@ -285,6 +284,10 @@ while [ $exit -eq 0 ]; do
     if [ "$selected" == "X" ];then 
         reading_date="$(date +"%Y%m%d_%H%M%S")"
         counter=0
+        echo " *****************************************************************" > ~/tarot_reading_"${reading_date}".txt
+        echo " Your query was: ${QUERY}" | fold -w 65 -s >> ~/tarot_reading_"${reading_date}".txt
+        echo " *****************************************************************" >> ~/tarot_reading_"${reading_date}".txt
+        echo " " >> ~/tarot_reading_"${reading_date}".txt
         while [ $counter -lt 10 ];do
             cat "${TempDir}"/"${counter}".txt >> ~/tarot_reading_"${reading_date}".txt
             (( counter++ ))

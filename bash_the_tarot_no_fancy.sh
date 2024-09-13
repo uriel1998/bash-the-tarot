@@ -16,6 +16,7 @@ export SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 LOUD=1 
 declare -a ReadingCardList=() 
 declare -a ReadingMeanings=() 
+declare -a drawn=()
 FOCUS=""
 USER_SEED=""
 ######################################################################## 
@@ -106,6 +107,14 @@ function draw_cards(){
             rand=$(get_random_baby)
             rand=$((rand+1))  
             if [[ ! " ${drawn[@]} " =~ " ${rand} " ]]; then  
+                # must add BOTH variants to the drawn array.
+                if [ $rand -gt 78 ];then
+                    rand2=$((rand+78))
+                else
+                    rand2=$((rand-78))
+                fi
+                drawn+=($rand) 
+                drawn+=($rand2)             
                 ReadingCardList+=($rand)  
                 break  
             fi  
