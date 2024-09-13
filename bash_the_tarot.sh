@@ -82,7 +82,7 @@ declare -a narrative3=("To resolve your situation" \
 "Card X: Exit Reading")
 
  declare -a position_meanings=("The Present or The Self - This position illustrates the present circumstances and ongoing events. It can also paint a picture of your current mental state and provide a glimpse of you identity at the present moment." \
-                        "The Problem - This card symbolizes the hurdles that youare grappling with, issues which need resolving to move ahead." \
+                        "The Problem - This card symbolizes the hurdles that you are grappling with, issues which need resolving to move ahead." \
                         "The Past - This position gives an insight into past occurrences and their contribution to the contemporary situation. It offers clues about the past influencers that steered the present conditions." \
                         "The Future - This card predicts possible developments, assuming the status quo. These are generally short-term predictions and do not depict an ultimate conclusion." \
                         "Conscious - This card scrutinizes what has your attention and where your thoughts lie. It could signify your objectives and wishes concerning this circumstance, as well as your expectations." \
@@ -204,17 +204,41 @@ done
 # use [, ], and q 
 
 loud "Beginning reading"
-echo "Your query was: ${QUERY}"
+echo " "
+echo "*****************************************************************"
+echo "Your query was: ${QUERY}" | fold -w 65 -s 
+echo "*****************************************************************"
+echo " "
 
 
 for (( i = 0; i < NUM_COUNT; i++ )); do
 
     echo "${position_names[i]}" > "${TempDir}"/"${i}".txt
+    
+    # for image
+    crnum=$(echo "${ReadingCardList[i]}")
+    s2=$(grep -e "^$crnum\=" "${SCRIPT_DIR}/lib/number_cards.dat")
+    crname=$(echo "${s2}" | awk -F '=' '{print $2}')
+    if [ $crnum -gt 78 ];then
+        echo "${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
+        echo " " >> "${TempDir}"/"${i}".txt            
+        crnum=$(( crnum - 78 ))
+        jp2a -y --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt     
+        echo " " >> "${TempDir}"/"${i}".txt   
+        echo "${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
+    else
+        echo "${crname}" >> "${TempDir}"/"${i}".txt            
+        echo " " >> "${TempDir}"/"${i}".txt            
+        jp2a -y --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt            
+        echo " " >> "${TempDir}"/"${i}".txt            
+        echo "${crname}" >> "${TempDir}"/"${i}".txt            
+    fi
     echo " " >> "${TempDir}"/"${i}".txt
-    echo "${position_meanings[i]}" >> "${TempDir}"/"${i}".txt
+    echo "${position_meanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
     echo " " >> "${TempDir}"/"${i}".txt
-    echo "${ReadingMeanings[i]}" >> "${TempDir}"/"${i}".txt
-    echo " ************" >> "${TempDir}"/"${i}".txt
+    echo "${ReadingMeanings[i]}" | fold -w 65 -s >> "${TempDir}"/"${i}".txt
+    echo " " >> "${TempDir}"/"${i}".txt
+    echo "*****************************************************************" >> "${TempDir}"/"${i}".txt
     #echo -e "\E[0;32m(\E[0;37mn\E[0;32m)ext, (\E[0;37mp\E[0;32m)revious, or (\E[0;37mq\E[0;32m)uit? "; tput sgr0
     #read -r CHOICE
     #asciiart -c -w 30 ./cups04.jpg
@@ -230,21 +254,19 @@ exit=0
 
 while [ $exit -eq 0 ]; do
     selected=$(printf "%s\n" "${position_names[@]}" | fzf | awk -F ':' '{print $1}' | awk -F ' ' '{print $2}')
-    echo "$selected"
     if [ "$selected" == "X" ];then
         exit=1
         break
     else
         selected=$(( selected-1 ))
-        echo "$selected"
         cat "${TempDir}"/"${selected}".txt
         read
     fi
     
 done
 
+
 # TODO Add option to save reading as one file
 # TODO Add images
 # TODO offer just slide by slide moving through
-
 rm -rf "${TempDir}"/*
