@@ -20,7 +20,7 @@ I wanted a fully featured, celtic-cross reading tarot program on the command lin
 
 The scripts *only* do the Celtic cross layout. 
 
-The images are the out-of-copyright Rider-Waite ones, though `jp2a` turns them into ASCII for us.
+The images are the Rider-Waite-Smith deck, though `jp2a` turns them into ASCII for us. The Rider-Waite-Smith deck is public domain in the US, but not currently in the EU. 
 
 The data for the readings largely come from  [the Resonator Voyant Tarot](https://github.com/abetusk/ResonatorVoyantTarot), although they've been modified somewhat.
 
@@ -71,6 +71,13 @@ You may also optionally export the reading which is placed in your $HOME directo
 Just gives you a quick reading, no fancypants stuff like images or scrolling.
 
 ## 6. Examples
+
+You can see it in action on [imgur](https://imgur.com/a/DkveyJC) if it is not 
+embedded below, or in the two `mkv` files in this repo.
+
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/DkveyJC" data-context="false" ><a href="//imgur.com/a/DkveyJC"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+
+
 
 ## 7. TODO
 

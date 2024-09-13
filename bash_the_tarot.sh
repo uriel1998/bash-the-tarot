@@ -222,14 +222,12 @@ for (( i = 0; i < NUM_COUNT; i++ )); do
     crname=$(echo "${s2}" | awk -F '=' '{print $2}')
     if [ $crnum -gt 78 ];then
         echo "  ${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
-        echo " " >> "${TempDir}"/"${i}".txt            
         crnum=$(( crnum - 78 ))
         jp2a -y --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt     
         echo " " >> "${TempDir}"/"${i}".txt   
         echo "  ${crname} in shadow (reversed)" >> "${TempDir}"/"${i}".txt            
     else
         echo "  ${crname}" >> "${TempDir}"/"${i}".txt            
-        echo " " >> "${TempDir}"/"${i}".txt            
         jp2a --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
         echo "  ${crname}" >> "${TempDir}"/"${i}".txt            
