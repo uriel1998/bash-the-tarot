@@ -73,11 +73,9 @@ Just gives you a quick reading, no fancypants stuff like images or scrolling.
 ## 6. Examples
 
 You can see it in action on [imgur](https://imgur.com/a/DkveyJC) if it is not 
-embedded below, or in the two `mkv` files in this repo.
-
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/DkveyJC" data-context="false" ><a href="//imgur.com/a/DkveyJC"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
-
-
+embedded below.
+![bash-the-tarot in action](https://github.com/uriel1998/bash-the-tarot/raw/master/bash-the-tarot.gif "bash-the-tarot in action")
+![non-fancy version](https://github.com/uriel1998/bash-the-tarot/raw/master/bash-the-tarot-nofancy.gif "non-fancy version")
 
 ## 7. TODO
 
