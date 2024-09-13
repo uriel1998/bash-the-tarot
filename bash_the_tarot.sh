@@ -19,7 +19,10 @@ declare -a ReadingMeanings=()
 FOCUS=""
 USER_SEED=""
 QUERY=""
-TempDir=$(mktemp -d)
+if [ ! -d "${SCRIPT_DIR}/tmp" ];then
+    mkdir -p "${SCRIPT_DIR}/tmp"
+fi
+TempDir="${SCRIPT_DIR}/tmp"
 ########################################################################
 # Arrays inside this script (the other data is in ./lib
 ########################################################################
@@ -79,7 +82,8 @@ declare -a narrative3=("To resolve your situation" \
 "Card 8: External Influence" \
 "Card 9: Hopes and Fears" \
 "Card 10: Outcome" \
-"Card X: Exit Reading")
+"Card X: Export Reading And Quit" \
+"Card Q: Just Quit")
 
  declare -a position_meanings=("The Present or The Self - This position illustrates the present circumstances and ongoing events. It can also paint a picture of your current mental state and provide a glimpse of you identity at the present moment." \
                         "The Problem - This card symbolizes the hurdles that you are grappling with, issues which need resolving to move ahead." \
@@ -262,10 +266,23 @@ exit=0
 
 
 while [ $exit -eq 0 ]; do
-    selected=$(printf "%s\n" "${position_names[@]}" | fzf | awk -F ':' '{print $1}' | awk -F ' ' '{print $2}')
-    if [ "$selected" == "X" ];then
+    selected=$(printf "%s\n" "${position_names[@]}" | fzf --header="Review your reading. Your query was ${QUERY}." --preview="${SCRIPT_DIR}/tarot-preview.sh {}" | awk -F ':' '{print $1}' | awk -F ' ' '{print $2}')
+    if [ "$selected" == "Q" ];then
+        # quit
         exit=1
         break
+    fi
+    if [ "$selected" == "X" ];then 
+        reading_date="$(date +"%Y%m%d_%H%M%S")"
+        counter=0
+        while [ $counter -lt 10 ];do
+            cat "${TempDir}"/"${counter}".txt >> ~/tarot_reading_"${reading_date}".txt
+            read
+            (( counter++ ))
+        done
+        # quit
+        exit=1
+        break        
     else
         selected=$(( selected-1 ))
         cat "${TempDir}"/"${selected}".txt
