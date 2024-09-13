@@ -229,7 +229,7 @@ for (( i = 0; i < NUM_COUNT; i++ )); do
     else
         echo "${crname}" >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
-        jp2a -y --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt            
+        jp2a --height=24 --colors "${SCRIPT_DIR}"/lib/img/"${crnum}".jpg >> "${TempDir}"/"${i}".txt            
         echo " " >> "${TempDir}"/"${i}".txt            
         echo "${crname}" >> "${TempDir}"/"${i}".txt            
     fi
@@ -249,6 +249,15 @@ done
 
 
 counter=0
+while [ $counter -lt 10 ];do
+    cat "${TempDir}"/"${counter}".txt
+    read
+    (( counter++ ))
+done
+
+
+    
+counter=0
 exit=0
 
 
@@ -267,6 +276,5 @@ done
 
 
 # TODO Add option to save reading as one file
-# TODO Add images
 # TODO offer just slide by slide moving through
 rm -rf "${TempDir}"/*
