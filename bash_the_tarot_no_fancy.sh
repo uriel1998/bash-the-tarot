@@ -177,6 +177,10 @@ for (( i = 0; i < NUM_COUNT; i++ )); do
     create_card_interpretation $i
 done
 
+echo " "
+echo " *****************************************************************" 
     for i in "${ReadingMeanings[@]}"; do
-       echo "${i}"                                                                                                                                              
+       echo " "    
+       echo "${i}"  | fold -w 80 -s      
+                                                                                                                                   
     done 

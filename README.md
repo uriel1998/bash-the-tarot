@@ -75,4 +75,4 @@ Just gives you a quick reading, no fancypants stuff like images or scrolling.
 ## 7. TODO
 
 * Add in no-color switch somehow
-* 
+* Add in the pictorial descriptions from R-W, perhaps?
